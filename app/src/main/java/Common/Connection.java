@@ -36,6 +36,7 @@ import java.lang.String;
 import java.util.concurrent.ExecutionException;
 
 import Utility.CompressZip;
+import forms_datamodel.Member_DataModel;
 
 //--------------------------------------------------------------------------------------------------
 // Created by TanvirHossain on 17/03/2015.
@@ -1815,4 +1816,22 @@ public class Connection extends SQLiteOpenHelper {
         String BNO = ReturnSingleValue("Select (ifnull(max(cast(Landmark as numeric(10))),0)+1)MaxId from GPS_Landmark where DCode='"+ DCode +"' and UPCode='"+ UPCode +"' and UNCode='"+ UNCode +"' and Cluster='"+ Cluster +"' and VCode='"+ VCode +"'");
         return Global.Right("0000000000"+BNO,3);
     }
+
+    public List<Member_DataModel> fetchMembers(String query) {
+        List<Member_DataModel> members = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            do {
+                Member_DataModel member = new Member_DataModel();
+                member.setName(cursor.getString(cursor.getColumnIndex("Name")));
+                member.setAge(cursor.getString(cursor.getColumnIndex("Age")));
+                member.setSex(cursor.getString(cursor.getColumnIndex("Gender")));
+                members.add(member);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return members;
+    }
+
 }

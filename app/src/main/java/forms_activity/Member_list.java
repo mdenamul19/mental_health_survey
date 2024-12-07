@@ -134,6 +134,7 @@ public class Member_list extends AppCompatActivity {
           //  ENTRYUSER = MySharedPreferences.getValue(this, "userid");
 
 
+
             TableName = "Member";
           //  lblHeading = (TextView)findViewById(R.id.lblHeading);
 
@@ -177,19 +178,19 @@ public class Member_list extends AppCompatActivity {
             spnHousehold = (Spinner)findViewById(R.id.spnHousehold);
 
 
-            spnLocation.setAdapter(C.getArrayAdapter("Select '"+ GeoLevel7 +"-"+ GeoLevel7Name +"'"));
-            spnVillage.setAdapter(C.getArrayAdapter("Select '"+ VillCode +"-"+ VillName +"'"));
-            spnCompound.setAdapter(C.getArrayAdapter("Select '"+ CompoundCode +"-"+ CompoundName +"'"));
-            spnHousehold.setAdapter(C.getArrayAdapter("Select '"+ HHNO +"-"+ HHHead +"'"));
+            spnLocation.setAdapter(C.getArrayAdapter("SELECT LocID || '-' || GeoLevel7Name FROM Location"));
+            spnVillage.setAdapter(C.getArrayAdapter("Select '' union Select VillID||'-'||VillName from Village where LocID='"+ spnLocation.getSelectedItem().toString().split("-")[0] +"'"));
+            spnCompound.setAdapter(C.getArrayAdapter("Select '' union Select CompoundID||'-'||CompoundName from Compound where VillID='"+ spnVillage.getSelectedItem().toString().split("-")[0] +"'"));
+            spnHousehold.setAdapter(C.getArrayAdapter("Select '' union Select HHID||'-'||HHHead from Household where CompoundID='"+ spnCompound.getSelectedItem().toString().split("-")[0] +"'"));
+
+
+
 
             // spnLocation.setEnabled(false);
-
-
-
             // Populate Location Spinner
             //  spnLocation.setAdapter(C.getArrayAdapter("SELECT GeoLevel1 || '-' || GeoLevel1Name FROM Location"));
             //spnLocation.setEnabled(false);
-
+            // spnVillage.setEnabled(spnVillage.getAdapter().getCount() > 1);
 
 
 
@@ -197,11 +198,10 @@ public class Member_list extends AppCompatActivity {
          spnLocation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
              @Override
              public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                 String selectedLocation = parent.getSelectedItem().toString().split("-")[0];
-//                 spnVillage.setAdapter(C.getArrayAdapter(
-//                         "SELECT VillCode || '-' || VillName FROM Village WHERE LocID='" + selectedLocation + "'"));
+                 String selectedLocation = parent.getSelectedItem().toString().split("-")[0];
+                 spnVillage.setAdapter(C.getArrayAdapter(
+                         "SELECT VillID || '-' || VillName FROM Village WHERE LocID='" + selectedLocation + "'"));
              }
-
              @Override
              public void onNothingSelected(AdapterView<?> parent) {}
          });
@@ -210,9 +210,9 @@ public class Member_list extends AppCompatActivity {
          spnVillage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
              @Override
              public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-             //    String selectedVillage = parent.getSelectedItem().toString().split("-")[0];
-               //  spnCompound.setAdapter(C.getArrayAdapter(
-               //          "SELECT CompoundCode || '-' || CompoundName FROM Compound WHERE VillID='" + selectedVillage + "'"));
+                 String selectedVillage = parent.getSelectedItem().toString().split("-")[0];
+                 spnCompound.setAdapter(C.getArrayAdapter(
+                        "SELECT CompoundID || '-' || CompoundName FROM Compound WHERE VillID='" + selectedVillage + "'"));
              }
 
              @Override
@@ -220,12 +220,13 @@ public class Member_list extends AppCompatActivity {
          });
 
 // Listener to populate Household Spinner
+
          spnCompound.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
              @Override
              public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-               //  String selectedCompound = parent.getSelectedItem().toString().split("-")[0];
-               //  spnHousehold.setAdapter(C.getArrayAdapter(
-                 //        "SELECT HHNO || '-' || HHHead FROM Household WHERE CompoundID='" + selectedCompound + "'"));
+                 String selectedCompound = parent.getSelectedItem().toString().split("-")[0];
+                spnHousehold.setAdapter(C.getArrayAdapter(
+                        "SELECT HHID || '-' || HHHead FROM Household WHERE CompoundID='" + selectedCompound + "'"));
              }
 
              @Override
@@ -239,14 +240,18 @@ public class Member_list extends AppCompatActivity {
              @Override
              public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                  String selectedHousehold = parent.getSelectedItem().toString().split("-")[0];
-              //   String query = "SELECT * FROM Member WHERE HHID='" + selectedHousehold + "'";
-               //  List<Member_DataModel> members = C.fetchMembers(query); // Create a fetchMembers() method in Connection
-             //   MemberAdapter.updateList(members); // Update RecyclerView
+                 String query = "SELECT * FROM Member WHERE HHID='" + selectedHousehold + "'";
+                 List<Member_DataModel> members = C.fetchMembers(query); // Implement this method in Connection class
+                 dataList.clear();
+                 dataList.addAll(members);
+                 mAdapter.notifyDataSetChanged();
 
              }
 
              @Override
-             public void onNothingSelected(AdapterView<?> parent) {}
+             public void onNothingSelected(AdapterView<?> parent) {
+
+             }
          });
 
 
@@ -266,6 +271,7 @@ public class Member_list extends AppCompatActivity {
             recyclerView.setAdapter(mAdapter);
 
           //  Connection.LocalizeLanguage(Member_list.this, MODULEID, LANGUAGEID);
+            DataSearch();
 
         }
         catch(Exception  e)
@@ -279,7 +285,7 @@ public class Member_list extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
       //  tmpBariNo = "";
-       // DataSearch();
+        DataSearch();
     }
 
 
@@ -299,29 +305,24 @@ public class Member_list extends AppCompatActivity {
         try
         {
 
-            GeoLevel7 = spnLocation.getSelectedItem().toString().split("-")[0];
-            VillName = spnVillage.getSelectedItem().toString().split("-")[0];
-            CompoundCode = spnCompound.getSelectedItem().toString().split("-")[0];
-            HHNO = spnHousehold.getSelectedItem().toString().split("-")[0];
+           // GeoLevel7 = spnLocation.getSelectedItem().toString().split("-")[0];
+         //   VillName = spnVillage.getSelectedItem().toString().split("-")[0];
+         //   CompoundCode = spnCompound.getSelectedItem().toString().split("-")[0];
+         //  HHID = spnHousehold.getSelectedItem().toString().split("-")[0];
 
          //   BARI = spnHousehold.getSelectedItemPosition()==0 ?"%" : spnBari.getSelectedItem().toString().split("-")[0];
 
             Member_DataModel d = new Member_DataModel();
+           /* String SQL = "SELECT MemID, DSSID, Name, BDate, Age, MoName, FaName " +
+                    "FROM Member m " +
+                    "INNER JOIN Household h " +
+                    "ON m.HHID = h.HHID " +
+                    "WHERE m.HHID LIKE ('" + HHID + "')";*/
 
-
-            String SQL = "Select h.DCode, h.UPCode, h.UNCode,h.Cluster, h.VCode, h.Bari, h.HHNo, h.HHHead, h.Mobile1, h.Mobile2, h.VisitStatus, ifnull(bn.BariName,'')BariName,b.BariLoc," +
-                    " (case when h.totalmember is null or length(ifnull(h.totalmember,''))=0 then 0 else h.totalmember end) totalmember, " +
-                    " (case when h.cmwratotal is null or length(ifnull(h.cmwratotal,''))=0 then 0 else h.cmwratotal end) cmwratotal," +
-                    " '' indexhh " +
-                    //" ifnull(i.hhno,'')indexhh " +
-                    " from Household h\n" +
-                    " left outer join (select b.DCode,b.UPCode,b.UNCode,b.cluster,b.VCode,b.Bari,b.BariName,min(h.HHNo)hhno from Bari b inner join Household h on b.DCode=h.DCode and b.UPCode=h.UPCode and b.Cluster=h.Cluster and b.UNCode=h.UNCode and b.VCode=h.VCode and b.Bari=h.Bari\n" +
-                    "      where b.DCode='"+ GeoLevel7 +"' and b.UPCode='"+ VillCode +"' and b.UNCode='"+ CompoundCode +"' and b.VCode='"+ HHNO +"'\n" +
-                    "      group by b.DCode,b.UPCode,b.UNCode,b.VCode,b.Bari,b.BariName)bn on h.dcode=bn.dcode and h.upcode=bn.upcode and h.uncode=bn.uncode and h.cluster=bn.cluster and h.vcode=bn.vcode and h.bari=bn.bari and h.hhno=bn.hhno" +
-                    " inner join Bari b on h.DCode=b.DCode and h.UPCode=b.UPCode and h.UNCode=b.UNCode and h.Cluster=b.Cluster and h.VCode=b.VCode and h.Bari=b.Bari\n" +
-                    //" left outer join Index_Household i on h.DCode=i.DCode and h.UPCode=i.UPCode and h.UNCode=i.UNCode and h.Cluster=i.Cluster and h.VCode=i.VCode and h.Bari=i.Bari and h.hhno=i.hhno" +
-                    " Where h.DCode='"+ GeoLevel7 +"' and h.UPCode='"+ VillCode +"' and h.UNCode='"+ CompoundCode +"' and h.Cluster='"+ HHNO +"' and h.VCode='"+ HHNO +"' and h.Bari like('"+ HHNO +"') " +
-                    " order by h.vcode, h.bari,h.hhno";
+            String SQL = "SELECT MemID, DSSID, Name, BDate, Age, MoName, FaName " +
+                    "FROM Member m " +
+                    "INNER JOIN Household h " +
+                    "ON m.HHID = h.HHID " ;
 
 
             List<Member_DataModel> data = d.SelectAll(this, SQL);
@@ -350,14 +351,20 @@ public class Member_list extends AppCompatActivity {
         private List<Member_DataModel> dataList;
 
         public class ViewHolder extends RecyclerView.ViewHolder {
-            TextView name, age, gender;
+              LinearLayout secMemberDetail;
+              TextView MemID, DSSID, Name,  Age, BDate, MoName, FaName;
 
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
                // name = itemView.findViewById(R.id.memberName);
-                name =itemView.findViewById(R.id.MemberName);
-                age = itemView.findViewById(R.id.MemberAge);
-                gender = itemView.findViewById(R.id.MemberGender);
+                secMemberDetail = (LinearLayout) findViewById(R.id.secMemberDetail);
+                MemID=(TextView)itemView.findViewById(R.id.MemberID);
+                DSSID=(TextView)itemView.findViewById(R.id.DSSID);
+                Name =(TextView)itemView.findViewById(R.id.MemberName);
+                Age = (TextView)itemView.findViewById(R.id.MemberAge);
+                BDate = (TextView)itemView.findViewById(R.id.BDate);
+                MoName = (TextView)itemView.findViewById(R.id.MoName);
+                FaName = (TextView)itemView.findViewById(R.id.FaName);
             }
         }
 
@@ -376,9 +383,14 @@ public class Member_list extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
            final Member_DataModel data = dataList.get(position);
-            //  holder.name.setText(data.getName());
-            //  holder.age.setText("Age: " + data.getAge());
-            //  holder.gender.setText("Gender: " + data.getSex());
+            Member_DataModel member = dataList.get(position);
+            holder.MemID.setText("MemID: " + member.getName());
+            holder.DSSID.setText("DSSID: " + member.getAge());
+            holder.Name.setText("Name: " + member.getSex());
+            holder.Age.setText("Age: " + member.getSex());
+            holder.BDate.setText("BDate: " + member.getSex());
+            holder.MoName.setText("MoName: " + member.getSex());
+            holder.FaName.setText("FaName: " + member.getSex());
         }
 
 

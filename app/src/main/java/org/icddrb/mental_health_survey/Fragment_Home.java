@@ -84,7 +84,7 @@ public class Fragment_Home extends Fragment {
                     {
                         //Activity Call
                         //--------------------------------------------------------------------------
-                        IBundle.putString("facilityid", FACILITYID);
+                      //  IBundle.putString("facilityid", FACILITYID);
                         Intent I = new Intent(thiscontext, Member_list.class);
                         I.putExtras(IBundle);
                         startActivity(I);

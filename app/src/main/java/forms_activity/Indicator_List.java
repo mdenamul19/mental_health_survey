@@ -206,6 +206,7 @@ public class Indicator_List extends AppCompatActivity {
          private List<IndicatorList_DataModel> dataList;
          public class MyViewHolder extends RecyclerView.ViewHolder {
          LinearLayout secListRow;
+
          LinearLayout secgroup_head;
          TextView theme;
          TextView indicator_name;
