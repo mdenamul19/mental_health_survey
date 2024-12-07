@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/secListRow"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:paddingBottom="@dimen/padding_list_row"
+    android:paddingTop="0dp">
+
+    <!-- Section for Member Name -->
+    <LinearLayout
+        android:background="#F3F3F3"
+        android:id="@+id/secMemberName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/lblMemberName"
+            android:text="Member Name"
+            android:textStyle="bold"
+            android:textColor="#006699"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="35dp"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <!-- Section for Member Details -->
+    <LinearLayout
+        android:id="@+id/secMemberDetail"
+        android:layout_below="@+id/secMemberName"
+        android:paddingLeft="5dp"
+        android:paddingRight="?listPreferredItemPaddingRight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!-- Box for Member ID -->
+        <LinearLayout
+            android:paddingTop="0sp"
+            android:paddingBottom="8sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/MemberID"
+                android:background="#D7D7D7"
+                android:textStyle="bold"
+                android:layout_width="35dp"
+                android:gravity="center"
+                android:layout_height="35dp"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <!-- Left Section: Member Details -->
+        <RelativeLayout
+            android:layout_weight="5"
+            android:layout_width="0dp"
+            android:layout_marginLeft="10sp"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/secLeft"
+                android:gravity="left"
+                android:paddingTop="5sp"
+                android:paddingBottom="8sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/MemberName"
+                    android:textColor="#006699"
+                    android:layout_width="match_parent"
+                    android:gravity="left"
+                    android:layout_height="wrap_content"
+                    android:text="John Doe" />
+
+                <TextView
+                    android:id="@+id/MemberGender"
+                    android:layout_width="match_parent"
+                    android:gravity="left"
+                    android:layout_height="wrap_content"
+                    android:text="Gender: Male" />
+
+                <TextView
+                    android:id="@+id/MemberAge"
+                    android:layout_width="match_parent"
+                    android:gravity="left"
+                    android:layout_height="wrap_content"
+                    android:text="Age: 25" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <!-- Right Section: Optional Actions -->
+        <LinearLayout
+            android:layout_alignParentRight="true"
+            android:paddingLeft="20dp"
+            android:paddingTop="8sp"
+            android:paddingBottom="8sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Button to Update Member -->
+            <Button
+                android:id="@+id/btnUpdateMember"
+                android:visibility="gone"
+                android:layout_weight="1"
+                android:textAllCaps="false"
+                android:layout_marginLeft="10sp"
+                android:layout_marginRight="10sp"
+                android:textSize="18sp"
+                android:textColor="@color/theme_color"
+                android:background="@drawable/button_style_circle_line"
+                android:layout_width="wrap_content"
+                android:layout_height="30sp"
+                android:text="Update"
+                android:paddingLeft="5sp"
+                android:paddingRight="5sp" />
+
+            <!-- Button to Visit Member -->
+            <Button
+                android:id="@+id/btnMemberVisit"
+                android:layout_weight="1"
+                android:layout_marginTop="0dp"
+                android:textAllCaps="false"
+                android:layout_marginLeft="10sp"
+                android:layout_marginRight="10sp"
+                android:textSize="18sp"
+                android:textColor="#000000"
+                android:background="@drawable/button_style_circle_line"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Visit"
+                android:paddingLeft="5sp"
+                android:paddingRight="5sp" />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
