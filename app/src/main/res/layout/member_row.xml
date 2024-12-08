@@ -12,6 +12,7 @@
     <!-- Section for Member Name -->
     <LinearLayout
         android:background="#F3F3F3"
+        android:visibility="gone"
         android:id="@+id/secMemberName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,46 +38,14 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <!-- Box for Member ID -->
-        <LinearLayout
-            android:paddingTop="0sp"
-            android:paddingBottom="8sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/MemberID"
-                android:background="#D7D7D7"
-                android:textStyle="bold"
-                android:layout_width="35dp"
-                android:gravity="center"
-                android:layout_height="35dp"
-                android:textSize="16sp" />
-        </LinearLayout>
 
-        <!-- Box for Member ID -->
-        <LinearLayout
-            android:paddingTop="0sp"
-            android:paddingBottom="8sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/DSSID"
-                android:background="#D7D7D7"
-                android:textStyle="bold"
-                android:layout_width="35dp"
-                android:gravity="center"
-                android:layout_height="35dp"
-                android:textSize="16sp" />
-        </LinearLayout>
 
-        <!-- Left Section: Member Details -->
+        <!-- Left Section: Name
         <RelativeLayout
             android:layout_weight="5"
             android:layout_width="0dp"
             android:layout_marginLeft="10sp"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content">-->
 
             <LinearLayout
                 android:id="@+id/secLeft"
@@ -86,9 +55,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+                <TextView
+                    android:id="@+id/MemberID"
+                    android:layout_width="match_parent"
+                    android:gravity="left"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/DSSID"
+                    android:layout_width="match_parent"
+                    android:gravity="left"
+                    android:layout_height="wrap_content" />
 
                 <TextView
-                    android:id="@+id/MemberName"
+                    android:id="@+id/Name"
                     android:textColor="#006699"
                     android:layout_width="match_parent"
                     android:gravity="left"
@@ -124,9 +103,9 @@
                     />
 
             </LinearLayout>
-        </RelativeLayout>
+        <!-- </RelativeLayout>
 
-        <!-- Right Section: Optional Actions -->
+        Right Section: Optional Actions -->
         <LinearLayout
             android:layout_alignParentRight="true"
             android:paddingLeft="20dp"
@@ -156,6 +135,7 @@
             <!-- Button to Visit Member -->
             <Button
                 android:id="@+id/btnMemberVisit"
+                android:visibility="gone"
                 android:layout_weight="1"
                 android:layout_marginTop="0dp"
                 android:textAllCaps="false"

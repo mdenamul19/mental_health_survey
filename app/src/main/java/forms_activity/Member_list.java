@@ -219,6 +219,9 @@ public class Member_list extends AppCompatActivity {
              public void onNothingSelected(AdapterView<?> parent) {}
          });
 
+            spnVillage.setEnabled(spnVillage.getAdapter().getCount() > 1);
+
+
 // Listener to populate Household Spinner
 
          spnCompound.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -234,9 +237,18 @@ public class Member_list extends AppCompatActivity {
          });
 
 
+         // optional or test purpose
+           /* if (spnVillage.getCount() == 1) {
+                spnVillage.setEnabled(false);
+            } else {
+                spnVillage.setEnabled(true);
+            }*/
 
 
-         spnHousehold.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+
+
+            spnHousehold.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
              @Override
              public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                  String selectedHousehold = parent.getSelectedItem().toString().split("-")[0];
@@ -360,7 +372,7 @@ public class Member_list extends AppCompatActivity {
                 secMemberDetail = (LinearLayout) findViewById(R.id.secMemberDetail);
                 MemID=(TextView)itemView.findViewById(R.id.MemberID);
                 DSSID=(TextView)itemView.findViewById(R.id.DSSID);
-                Name =(TextView)itemView.findViewById(R.id.MemberName);
+                Name =(TextView)itemView.findViewById(R.id.Name);
                 Age = (TextView)itemView.findViewById(R.id.MemberAge);
                 BDate = (TextView)itemView.findViewById(R.id.BDate);
                 MoName = (TextView)itemView.findViewById(R.id.MoName);

@@ -1824,9 +1824,14 @@ public class Connection extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 Member_DataModel member = new Member_DataModel();
+                member.setMemID(cursor.getString(cursor.getColumnIndex("MemID")));
+                member.setDSSID(cursor.getString(cursor.getColumnIndex("DSSID")));
                 member.setName(cursor.getString(cursor.getColumnIndex("Name")));
+                member.setBDate(cursor.getString(cursor.getColumnIndex("BDate")));
                 member.setAge(cursor.getString(cursor.getColumnIndex("Age")));
-                member.setSex(cursor.getString(cursor.getColumnIndex("Gender")));
+                member.setMoName(cursor.getString(cursor.getColumnIndex("MoName")));
+                member.setFaName(cursor.getString(cursor.getColumnIndex("FaName")));
+
                 members.add(member);
             } while (cursor.moveToNext());
         }
